@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          _showGraph(),
+          _showGraph(bands),
           Expanded(
               child: ListView.builder(
                   itemCount: bands.length,
@@ -172,46 +172,51 @@ class _HomePageState extends State<HomePage> {
     socketService.socket.emit('delete-band', {'id': id});
   }
 
-  Widget _showGraph() {
+  Widget _showGraph(bands) {
     Map<String, double> dataMap = new Map();
 
     bands.forEach((band) {
       dataMap.addAll({band.name: band.votes.toDouble() });
     });
 
-  List<Color> colorList = [
-    Colors.blue[150],
-    Colors.red[150],
-    Colors.green[150],
-    Colors.yellow[150],
-    Colors.brown[150],
-  ];
 
-  return PieChart(
-    dataMap: dataMap,
-    animationDuration: Duration(milliseconds: 800),
-      chartLegendSpacing: 32,
-      chartRadius: MediaQuery.of(context).size.width / 3,
-      colorList: colorList,
-      initialAngleInDegree: 0,
-      chartType: ChartType.ring,
-      ringStrokeWidth: 32,
-      centerText: "HYBRID",
-      legendOptions: LegendOptions(
-        showLegendsInRow: false,
-        legendPosition: LegendPosition.right,
-        showLegends: true,
-        legendShape: BoxShape.circle,
-        legendTextStyle: TextStyle(
-          fontWeight: FontWeight.bold,
+    List<Color> colorList = [
+      Colors.pink[100],
+      Colors.blue[100],
+      Colors.yellow[100],
+      Colors.red[100],
+    ];
+
+
+  return 
+    Container(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      child: PieChart(
+        dataMap: dataMap,
+        animationDuration: Duration(milliseconds: 800),
+          chartLegendSpacing: 32,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          colorList: colorList,
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 32,
+          centerText: "BANDS",
+          legendOptions: LegendOptions(
+            showLegendsInRow: false,
+            legendPosition: LegendPosition.right,
+            showLegends: true,
+            legendShape: BoxShape.circle,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          chartValuesOptions: ChartValuesOptions(
+            showChartValueBackground: true,
+            showChartValues: true,
+            showChartValuesInPercentage: false,
+            showChartValuesOutside: false,
+          ),
         ),
-      ),
-      chartValuesOptions: ChartValuesOptions(
-        showChartValueBackground: true,
-        showChartValues: true,
-        showChartValuesInPercentage: false,
-        showChartValuesOutside: false,
-      ),
-    ) ;
+    );
   }
 }
